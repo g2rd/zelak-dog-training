@@ -1,0 +1,379 @@
+@import './variables.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Kotwice nie chowają się pod przyklejonym navbarem. */
+    scroll-padding-top: var(--navbar-height);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: rgb(var(--c-ink));
+    color: rgb(var(--c-primary));
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: var(--body-leading);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: var(--heading-tracking);
+    /*
+     * 1.05 wyglądało dobrze po angielsku i łamało się po polsku.
+     *
+     * Oswald rysuje kreski i kropki nad wersalikami (Ń Ó Ś Ż) wysoko ponad
+     * linią wersalików, a ogonek w „Ę" schodzi nisko pod linię pisma. Przy
+     * ciasnej interlinii jedno wchodziło w drugie, a znaki diakrytyczne
+     * przyklejały się optycznie do wiersza WYŻEJ, przez co wyglądały jak
+     * zgubione. To nie jest problem estetyczny: „ROZWIN" zamiast „ROZWIŃ"
+     * to inne słowo.
+     */
+    line-height: 1.18;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  /*
+   * Tailwind wraz z rozmiarem ustawia interlinię: klasa `text-7xl` to nie tylko
+   * font-size, lecz także line-height: 1. Reguła dla samego elementu (wyżej)
+   * nigdy by jej nie przebiła, bo klasa ma wyższą specyficzność — i przez to
+   * nagłówki i tak składały się z interlinią 1,0. Selektor z atrybutem podnosi
+   * specyficzność do 0-1-1 i wygrywa, nie ruszając nic poza nagłówkami.
+   */
+  h1[class],
+  h2[class],
+  h3[class],
+  h4[class] {
+    line-height: 1.18;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  ::selection {
+    background: rgb(var(--c-selection));
+    color: rgb(var(--c-selection-text));
+  }
+
+  /* Widoczny focus dla nawigacji klawiaturą (WCAG 2.4.7). */
+  :focus-visible {
+    outline: 2px solid rgb(var(--c-primary));
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Kontener treści — stała szerokość i responsywny padding z tokenów. */
+  .container-content {
+    width: 100%;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding-inline: var(--content-padding);
+  }
+
+  /* Pionowy rytm sekcji. */
+  .section-spacing {
+    padding-block: var(--section-spacing);
+  }
+
+  /* Delikatne ziarno — dekoracja z brand.visualDirection. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--grain-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Zdjęcia w czerni i bieli (brand.visualDirection.imageStyle). */
+  .img-mono {
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  /*
+   * Wejście sekcji (fade-up).
+   *
+   * Reguła działa TYLKO pod `html.js`, a tę klasę dokleja skrypt w <head>.
+   * Bez JavaScriptu — czyli dla robotów wyszukiwarek i czytników — treść
+   * jest od początku w pełni widoczna, nic nie jest ukryte za opacity: 0.
+   */
+  .js .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease);
+    will-change: opacity, transform;
+  }
+
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal,
+    .js .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  /*
+   * Wejście treści nad linią załamania (hero).
+   *
+   * Świadomie BEZ animacji krycia. `.reveal` zaczyna od opacity: 0 i czeka na
+   * IntersectionObserver, czyli na uruchomienie Reacta — a to znaczy, że
+   * nagłówek H1 (element LCP) pojawiał się dopiero po pobraniu całego
+   * JavaScriptu, mimo że jego treść była w HTML od pierwszej klatki.
+   * Tutaj animujemy wyłącznie przesunięcie: element jest widoczny i policzony
+   * jako namalowany natychmiast, więc LCP zrównuje się z FCP.
+   */
+  .js .rise {
+    animation: rise 0.55s var(--ease) both;
+  }
+
+  @keyframes rise {
+    from {
+      transform: translateY(18px);
+    }
+    to {
+      transform: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .rise {
+      animation: none;
+    }
+  }
+
+  /* Wejście menu pełnoekranowego — zastępuje AnimatePresence. */
+  .menu-enter {
+    animation: menu-fade 0.22s var(--ease) both;
+  }
+
+  @keyframes menu-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-enter {
+      animation: none;
+    }
+  }
+
+  /*
+   * Grafika tła w sekcji hero.
+   *
+   * Trzy szerokości pliku i dwa motywy. Przeglądarka pobiera dokładnie JEDEN
+   * plik — ten z reguły, która wygrała kaskadę. To jest powód, dla którego
+   * grafika jest tłem CSS, a nie elementem <img>: warianty <picture> ukryte
+   * przez display:none i tak są pobierane (sprawdzone).
+   *
+   * Progi szerokości odpowiadają dawnym media w <picture>. Nie zależą od
+   * gęstości ekranu (w odróżnieniu od srcset + sizes), więc telefon dostaje
+   * plik 600 px również wtedy, gdy ma ekran 3x.
+   *
+   * Domyślnie — czyli gdy <html> nie ma jeszcze atrybutu data-theme, bez
+   * JavaScriptu i u robota wyszukiwarki — obowiązuje wersja jasna, zgodnie
+   * z domyślnym motywem strony.
+   */
+  .hero-art {
+    height: 100%;
+    width: 100%;
+    /* Wersja jasna to rysunek kreską na bieli. Pod gradientem i przy 60%
+       krycia kreska robi się jasnoszara — podbicie kontrastu przywraca jej
+       czytelność, nie ruszając układu. */
+    background-image: url('/assets/images/zelak-logo-light-600.webp');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    filter: contrast(1.3) brightness(0.9);
+  }
+
+  @media (min-width: 641px) {
+    .hero-art {
+      background-image: url('/assets/images/zelak-logo-light-800.webp');
+    }
+  }
+
+  @media (min-width: 1025px) {
+    .hero-art {
+      background-image: url('/assets/images/zelak-logo-light-1200.webp');
+    }
+  }
+
+  /* Wersja ciemna ma pełne półcienie i nie potrzebuje korekty kontrastu. */
+  :root[data-theme='dark'] .hero-art {
+    background-image: url('/assets/images/zelak-logo-600.webp');
+    filter: none;
+  }
+
+  @media (min-width: 641px) {
+    :root[data-theme='dark'] .hero-art {
+      background-image: url('/assets/images/zelak-logo-800.webp');
+    }
+  }
+
+  @media (min-width: 1025px) {
+    :root[data-theme='dark'] .hero-art {
+      background-image: url('/assets/images/zelak-logo.webp');
+    }
+  }
+
+  /* Osadzona mapa Google dopasowana do monochromatycznej strony. */
+  .map-tone {
+    filter: var(--map-filter);
+  }
+
+  /*
+   * Tekst nad grafiką hero.
+   *
+   * Wcześniej cień był wpisany w JSX jako drop-shadow-[...rgba(0,0,0,0.9)].
+   * W motywie jasnym czarna poświata wokół czarnego napisu robi brudną
+   * obwódkę, więc kolor cienia przeszedł do tokena i zmienia się z motywem.
+   */
+  .text-legible {
+    filter: drop-shadow(var(--shadow-legible));
+  }
+
+  .text-legible-sm {
+    filter: drop-shadow(var(--shadow-legible-sm));
+  }
+
+  /*
+   * Treść z Markdowna (instrukcje zadań, wstępy dni).
+   *
+   * Tailwind w warstwie `base` zeruje marginesy i wypunktowania list, więc bez
+   * tych reguł instrukcja „1. …  2. …" renderuje się jako jeden zlepiony
+   * akapit bez numerów. Style są tutaj, a nie w komponencie, bo Markdown
+   * generuje zwykłe znaczniki HTML — nie da się im dopisać klas Tailwinda.
+   */
+  .md {
+    color: rgb(var(--c-secondary));
+    font-size: 15px;
+  }
+
+  .md > * + * {
+    margin-top: 1rem;
+  }
+
+  .md strong {
+    color: rgb(var(--c-primary));
+    font-weight: 600;
+  }
+
+  .md a {
+    color: rgb(var(--c-primary));
+    text-decoration: underline;
+  }
+
+  .md ul,
+  .md ol {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .md ul {
+    list-style: disc;
+  }
+
+  .md ol {
+    list-style: decimal;
+  }
+
+  .md h1,
+  .md h2,
+  .md h3,
+  .md h4 {
+    color: rgb(var(--c-primary));
+    font-size: 1.125rem;
+    margin-top: 1.5rem;
+  }
+
+  .md blockquote {
+    border-left: 2px solid rgb(var(--c-line));
+    padding-left: 1rem;
+    color: rgb(var(--c-muted));
+  }
+
+  .md code {
+    background: rgb(var(--c-dark));
+    border-radius: var(--radius);
+    padding: 0.1em 0.35em;
+    font-size: 0.9em;
+  }
+
+  .md img {
+    border-radius: var(--radius);
+  }
+
+  .md hr {
+    border: 0;
+    border-top: 1px solid rgb(var(--c-line));
+  }
+
+  /* Link pomijający nawigację — pierwszy element w DOM. */
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    left: 1rem;
+    top: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: rgb(var(--c-primary));
+    color: rgb(var(--c-ink));
+  }
+}

@@ -1,0 +1,110 @@
+/**
+ * Tokeny marki ZELAK.
+ * Jedyne miejsce, w którym definiujemy wartości wizualne.
+ *
+ * DLACZEGO KOLORY SĄ ZAPISANE JAKO TRZY LICZBY, A NIE JAKO #HEX.
+ *
+ * Tailwind pozwala pisać `bg-ink/95`, `from-ink/90`, `bg-secondary/50` —
+ * czyli kolor z tokena plus przezroczystość. Żeby to działało, konfiguracja
+ * Tailwinda musi móc wstawić własną wartość alfa do funkcji rgb(), a to jest
+ * możliwe tylko wtedy, gdy zmienna zawiera same kanały („10 10 11"), bez
+ * nawiasów i bez #. Stąd ten zapis. Patrz tailwind.config.js.
+ *
+ * MOTYWY.
+ *
+ * `:root` to motyw JASNY — motyw domyślny. Ciemny nadpisuje wyłącznie kolory,
+ * pod selektorem [data-theme="dark"]. Atrybut ustawia skrypt w <head>
+ * (index.html) jeszcze przed pierwszym malowaniem, więc przy wejściu nie ma
+ * mignięcia.
+ *
+ * Dlaczego jasny jest bazą, a nie ciemny: to, co siedzi w `:root`, widzą
+ * wszyscy, u których skrypt nie zdążył lub nie mógł zadziałać — bez
+ * JavaScriptu i robot wyszukiwarki w prerenderowanym HTML-u. Baza musi być
+ * tym samym, co widzi zwykły odwiedzający, inaczej te dwa obrazy się rozjeżdżają.
+ */
+:root {
+  /*
+   * --- Kolory: motyw jasny (domyślny) ---
+   *
+   * To nie jest odwrócenie czerni i bieli. Czysta biel jako tło całej strony
+   * męczy wzrok tak samo jak czysta czerń, dlatego tło jest lekko złamane
+   * (#FAFAF9), a karty są od niego JAŚNIEJSZE (#FFFFFF) — zachowuje to
+   * hierarchię z motywu ciemnego, gdzie karta też „wychodzi" ponad tło.
+   * Tekst nigdy nie jest czystą czernią.
+   */
+  --c-ink: 250 250 249;
+  --c-dark: 244 244 242;
+  --c-surface: 255 255 255;
+  --c-line: 224 224 220;
+  --c-primary: 19 19 22;
+  --c-secondary: 76 76 84;
+  --c-muted: 105 105 115;
+  --c-selection: 19 19 22;
+  --c-selection-text: 250 250 249;
+
+  /* Cień pod tekstem hero — podnosi czytelność nad grafiką tła. Na jasnym tle
+     musi być biały, inaczej robi brudną obwódkę wokół czarnych liter. */
+  --shadow-legible: 0 2px 24px rgba(250, 250, 249, 0.95);
+  --shadow-legible-sm: 0 1px 12px rgba(250, 250, 249, 0.95);
+
+  /* Korekta osadzonej mapy Google do reszty strony. */
+  --map-filter: grayscale(1) contrast(1.03);
+  /* Ziarno to czarny szum — na białym tle widać je znacznie mocniej. */
+  --grain-opacity: 0.02;
+
+  /* Typografia */
+  --font-heading: 'Oswald', Arial, sans-serif;
+  --font-body: 'Inter', Arial, sans-serif;
+  --heading-tracking: 0.04em;
+  --body-leading: 1.7;
+
+  /* Layout */
+  --max-width: 1240px;
+  --navbar-height: 80px;
+  --content-padding: 20px;
+  --section-spacing: 72px;
+  --radius: 4px;
+
+  /* Ruch */
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/**
+ * Motyw ciemny — oryginalna paleta marki, teraz jako opcja.
+ */
+:root[data-theme='dark'] {
+  --c-ink: 0 0 0;
+  --c-dark: 5 5 5;
+  --c-surface: 16 16 16;
+  --c-line: 41 41 41;
+  --c-primary: 255 255 255;
+  --c-secondary: 189 189 189;
+  /* #808080, nie #777777: na tle .bg-surface (#101010) stary odcień dawał
+     kontrast 4,25:1, czyli poniżej progu WCAG AA (4,5:1) dla zwykłego tekstu.
+     Ten daje 4,77:1 i przechodzi na każdym z trzech teł. */
+  --c-muted: 128 128 128;
+  --c-selection: 255 255 255;
+  --c-selection-text: 0 0 0;
+
+  --shadow-legible: 0 2px 24px rgba(0, 0, 0, 0.9);
+  --shadow-legible-sm: 0 1px 12px rgba(0, 0, 0, 0.9);
+
+  --map-filter: grayscale(1) contrast(1.05) brightness(0.88);
+  --grain-opacity: 0.035;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --content-padding: 24px;
+    --section-spacing: 90px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --content-padding: 32px;
+    --section-spacing: 120px;
+  }
+}

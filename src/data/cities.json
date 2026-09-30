@@ -1,0 +1,108 @@
+{
+  "_readme": [
+    "Dane do stron miejskich (/szkolenie-psow-<slug>).",
+    "KAŻDE miasto musi mieć własną, prawdziwą treść — inaczej Google potraktuje te strony",
+    "jako doorway pages (strony różniące się tylko nazwą miasta) i ukarze całą domenę.",
+    "Pola `lead`, `places`, `transport` i `focus` sprawdź i dopasuj do miejsc, w których faktycznie bywasz.",
+    "Czasy dojazdu są orientacyjne — popraw, jeśli się nie zgadzają.",
+    "Dodajesz miasto? Dopisz wpis tutaj i uruchom npm run build — trasa, prerendering",
+    "i sitemap podchwycą je automatycznie."
+  ],
+  "base": {
+    "city": "Zabrze",
+    "trainingGround": "plac treningowy w Zabrzu"
+  },
+  "cities": [
+    {
+      "slug": "zabrze",
+      "name": "Zabrze",
+      "in": "w Zabrzu",
+      "from": "z Zabrza",
+      "isBase": true,
+      "travelMinutes": 0,
+      "lead": "Zabrze to moja baza — tutaj mam plac treningowy, na którym prowadzę zajęcia stacjonarne: posłuszeństwo, pracę węchową i budowanie motywacji w kontrolowanych warunkach, bez przypadkowych bodźców.",
+      "places": [
+        "plac treningowy — zajęcia stacjonarne w spokojnym, powtarzalnym otoczeniu",
+        "centrum i okolice dworca — nauka spokoju w ruchu ulicznym",
+        "galerie handlowe — śliskie posadzki, windy, echo, tłum"
+      ],
+      "transport": "Autobusy i tramwaje przez centrum — nauka wsiadania, jazdy i wysiadania bez paniki.",
+      "focus": "Pełny zakres: od zajęć na placu po socjalizację w mieście."
+    },
+    {
+      "slug": "gliwice",
+      "name": "Gliwice",
+      "in": "w Gliwicach",
+      "from": "z Gliwic",
+      "travelMinutes": 15,
+      "lead": "Gliwice mają układ, który dobrze służy socjalizacji: zwarta starówka z wąskimi uliczkami, otwarty rynek i duże galerie handlowe w zasięgu krótkiego spaceru. Można w godzinę przeprowadzić psa przez kilka zupełnie różnych środowisk.",
+      "places": [
+        "Rynek i starówka — wąskie przejścia, kostka brukowa, ogródki gastronomiczne",
+        "deptak — gęsty ruch pieszych z bliskiego dystansu",
+        "galerie handlowe — schody ruchome, windy, gładkie posadzki"
+      ],
+      "transport": "Węzeł autobusowy i tramwaje — dobry poligon do nauki jazdy komunikacją miejską.",
+      "focus": "Spokój w ciasnej zabudowie i w tłumie."
+    },
+    {
+      "slug": "bytom",
+      "name": "Bytom",
+      "in": "w Bytomiu",
+      "from": "z Bytomia",
+      "travelMinutes": 15,
+      "lead": "Bytom daje kontrast, o który trudno gdzie indziej: reprezentacyjny deptak i rynek, a kilka minut dalej ciche, poprzemysłowe kwartały. Pies uczy się przełączać między pobudzeniem a spokojem w trakcie jednego spaceru.",
+      "places": [
+        "deptak w centrum — długi odcinek z gęstym ruchem pieszych",
+        "rynek — otwarta przestrzeń, gołębie, ruch uliczny",
+        "spokojniejsze kwartały — wyciszenie tuż po ekspozycji na bodźce"
+      ],
+      "transport": "Tramwaje i autobusy — węzeł przesiadkowy pozwala ćwiczyć przesiadki, nie tylko sam przejazd.",
+      "focus": "Przełączanie psa między wysokim pobudzeniem a spokojem."
+    },
+    {
+      "slug": "ruda-slaska",
+      "name": "Ruda Śląska",
+      "in": "w Rudzie Śląskiej",
+      "from": "z Rudy Śląskiej",
+      "travelMinutes": 15,
+      "lead": "Ruda Śląska jest rozrzucona na dzielnice o zupełnie różnym charakterze — od familoków i osiedli po duże tereny zielone. W jednym mieście da się przejść od pracy węchowej w spokoju do socjalizacji w gęstej zabudowie.",
+      "places": [
+        "osiedla i familoki — wąskie podwórka, echo, bliski kontakt z ludźmi",
+        "tereny zielone — naturalne podłoże pod pracę węchową i tropienie",
+        "sklepy wielkopowierzchniowe — bodźce typowo miejskie"
+      ],
+      "transport": "Autobusy i tramwaje łączące dzielnice — długie przejazdy między częściami miasta.",
+      "focus": "Praca węchowa na naturalnym podłożu plus socjalizacja w zabudowie."
+    },
+    {
+      "slug": "katowice",
+      "name": "Katowice",
+      "in": "w Katowicach",
+      "from": "z Katowic",
+      "travelMinutes": 25,
+      "lead": "Katowice to najtrudniejszy poligon w całej aglomeracji. Największe natężenie bodźców, największy węzeł komunikacyjny i przestrzenie, w których dzieje się kilka rzeczy naraz. Tutaj sprawdzamy, czy wypracowany spokój faktycznie działa, a nie tylko wygląda dobrze na placu.",
+      "places": [
+        "Rynek i Strefa Kultury — otwarte place, duże natężenie ruchu pieszego",
+        "galerie handlowe przy dworcu — najgęstszy tłum w regionie",
+        "okolice dworca — hałas, zapowiedzi, nieustanny ruch"
+      ],
+      "transport": "Największy węzeł tramwajowy i autobusowy na Śląsku. Jazda zatłoczonym pojazdem to zupełnie inne zadanie niż przejazd o pustej porze.",
+      "focus": "Sprawdzian skuteczności treningu przy maksymalnym natężeniu bodźców."
+    },
+    {
+      "slug": "chorzow",
+      "name": "Chorzów",
+      "in": "w Chorzowie",
+      "from": "z Chorzowa",
+      "travelMinutes": 20,
+      "lead": "Chorzów wyróżnia Park Śląski — jeden z niewielu terenów w aglomeracji, gdzie na dużej przestrzeni spotyka się naraz mnóstwo psów, rowerzystów i biegaczy. To najlepsze miejsce w okolicy do pracy nad przywołaniem w prawdziwych rozproszeniach, a nie w symulowanych.",
+      "places": [
+        "Park Śląski — przywołanie przy dużej liczbie innych psów",
+        "alejki parkowe — rowerzyści, biegacze, hulajnogi",
+        "rynek i centrum — miejski kontrast zaraz po pracy w parku"
+      ],
+      "transport": "Tramwaje łączące Chorzów z sąsiednimi miastami — częste kursy, krótkie odcinki.",
+      "focus": "Przywołanie i kontrola przy innych psach w otwartej przestrzeni."
+    }
+  ]
+}

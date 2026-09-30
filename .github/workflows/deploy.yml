@@ -1,0 +1,134 @@
+name: Testy i wdrożenie
+
+# Dwie gałęzie, dwie role:
+#   dev  — praca bieżąca. Buduje i testuje, ale NICZEGO nie wdraża.
+#   main — produkcja. Po przejściu testów wgrywa dist/ na Hostido.
+#
+# Pull request do main też przechodzi testy, więc nie da się scalić kodu,
+# który nie przechodzi kontroli.
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  # ==========================================================================
+  #  1. TESTY — bramka. Bez nich nic nie jedzie na serwer.
+  # ==========================================================================
+  testy:
+    name: Testy i kontrola builda
+    runs-on: ubuntu-latest
+    steps:
+      # Na main brak sekretu to pewna porażka kilka kroków dalej, ale z
+      # nieczytelnym komunikatem. Tu od razu widać, którego brakuje.
+      - name: Sprawdź sekrety produkcji
+        if: github.ref == 'refs/heads/main'
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+        run: |
+          brak=""
+          for nazwa in FTP_SERVER FTP_USERNAME FTP_PASSWORD VITE_SUPABASE_URL VITE_SUPABASE_ANON_KEY; do
+            test -n "${!nazwa}" || brak="$brak $nazwa"
+          done
+          test -z "$brak" || { echo "::error::Brak sekretów w Settings → Secrets and variables → Actions:$brak"; exit 1; }
+          echo "komplet sekretów"
+
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Testy jednostkowe
+        run: npm test
+
+      # Klucze publiczne Supabase muszą być obecne w CHWILI BUDOWANIA —
+      # Vite wstawia je do paczki na stałe. Brak sekretu nie wywala builda,
+      # ale strefa kursów pokaże ekran „nie skonfigurowano".
+      - name: Build produkcyjny
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      # Sprawdza rzeczy, których testy jednostkowe nie widzą: czy wizytówka
+      # nie ciągnie kodu strefy, czy app.html ma pusty korzeń, czy do paczki
+      # nie wyciekł sekret. Patrz scripts/check-build.js.
+      - name: Kontrola gotowego builda
+        run: npm run test:build
+        env:
+          # Na produkcji brak kluczy Supabase w paczce to błąd krytyczny:
+          # strona zbuduje się bez ostrzeżenia, a strefa kursów będzie martwa
+          # dla wszystkich klientów. Na gałęzi roboczej wystarczy informacja.
+          EXPECT_SUPABASE_CONFIG: ${{ github.ref == 'refs/heads/main' && '1' || '0' }}
+
+      # Zachowujemy build, żeby wdrożenie nie budowało po raz drugi —
+      # wgrywamy dokładnie to, co przeszło kontrolę, a nie nową kompilację.
+      - name: Zachowaj build
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          include-hidden-files: true # bez tego .htaccess przepadnie
+          retention-days: 14 # tyle dni można ponownie wgrać tę wersję (Re-run)
+
+  # ==========================================================================
+  #  2. WDROŻENIE — tylko z main i tylko po zielonych testach.
+  # ==========================================================================
+  wdrozenie:
+    name: Wgranie na Hostido
+    needs: testy
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      # Pas bezpieczeństwa: gdyby artefakt przyszedł niekompletny, lepiej
+      # zatrzymać się tutaj niż wgrać na produkcję stronę bez reguł serwera.
+      - name: Sprawdź, czy artefakt jest kompletny
+        run: |
+          test -f dist/index.html || { echo "brak index.html"; exit 1; }
+          test -f dist/app.html   || { echo "brak app.html";   exit 1; }
+          test -f dist/.htaccess  || { echo "brak .htaccess";  exit 1; }
+          echo "artefakt kompletny"
+
+      - name: Wyślij na FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: ./dist/
+          # Konto FTP „deploy” ma katalog startowy = public_html domeny
+          # (DirectAdmin → Niestandardowy), więc wgrywamy do korzenia konta.
+          # Konto z katalogiem domeny wymagałoby tu ./public_html/.
+          server-dir: ./
+          dangerous-clean-slate: false
+
+      # Sprawdzenie na żywo. Wgranie „się udało” nie znaczy jeszcze, że strona
+      # działa — brak .htaccess daje 404 na strefie, pusty build daje stronę
+      # bez treści. Czerwony krok tutaj = mail z GitHuba do właściciela repo.
+      - name: Sprawdź stronę na żywo
+        run: |
+          sleep 15
+          for adres in / /aktywuj /regulamin /polityka-prywatnosci; do
+            kod=$(curl -sL -o /dev/null -w '%{http_code}' "https://zelak.pl$adres")
+            echo "$adres → $kod"
+            test "$kod" = 200 || { echo "::error::https://zelak.pl$adres zwraca $kod"; exit 1; }
+          done
+          curl -sL https://zelak.pl/ | grep -q 'Nazywam się Łukasz' || { echo "::error::strona główna nie ma prerenderowanej treści"; exit 1; }
+          echo "strona działa"

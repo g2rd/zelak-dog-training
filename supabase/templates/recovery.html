@@ -1,0 +1,178 @@
+<!--
+  Reset hasła.
+
+  Zmienne Supabase: {{ .ConfirmationURL }} — link prowadzący na /nowe-haslo.
+
+  Uwaga na treść: e-mail resetujący dostaje też ktoś, kto o niego nie prosił
+  (bo ktoś inny wpisał jego adres). Dlatego wiadomość nie może brzmieć jak
+  potwierdzenie, że coś już się zmieniło — musi jasno mówić, że bez kliknięcia
+  nic się nie dzieje.
+-->
+<table
+  role="presentation"
+  width="100%"
+  cellpadding="0"
+  cellspacing="0"
+  style="
+    background: #fafaf9;
+    padding: 32px 16px;
+    font-family:
+      -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Arial, sans-serif;
+  "
+>
+  <tr>
+    <td align="center">
+      <table
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        style="
+          max-width: 520px;
+          background: #ffffff;
+          border: 1px solid #e0e0dc;
+          border-radius: 4px;
+        "
+      >
+        <tr>
+          <td style="padding: 32px 32px 8px">
+            <p
+              style="
+                margin: 0;
+                font-size: 13px;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+                color: #696973;
+              "
+            >
+              ZELAK Dog Training
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 8px 32px 0">
+            <h1
+              style="
+                margin: 0;
+                font-size: 24px;
+                line-height: 1.25;
+                color: #131316;
+                font-weight: 600;
+              "
+            >
+              Ustaw nowe hasło
+            </h1>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 16px 32px 0">
+            <p
+              style="
+                margin: 0;
+                font-size: 15px;
+                line-height: 1.6;
+                color: #4c4c54;
+              "
+            >
+              Ktoś poprosił o zmianę hasła do konta w strefie kursów ZELAK.
+              Kliknij przycisk, żeby ustawić nowe. Link jest ważny przez
+              godzinę.
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 24px 32px 0">
+            <table role="presentation" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="background: #131316; border-radius: 4px">
+                  <a
+                    href="{{ .ConfirmationURL }}"
+                    style="
+                      display: inline-block;
+                      padding: 14px 28px;
+                      font-size: 13px;
+                      letter-spacing: 0.12em;
+                      text-transform: uppercase;
+                      color: #ffffff;
+                      text-decoration: none;
+                    "
+                  >
+                    Ustaw nowe hasło
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 24px 32px 0">
+            <p
+              style="
+                margin: 0;
+                font-size: 13px;
+                line-height: 1.6;
+                color: #696973;
+              "
+            >
+              Przycisk nie działa? Skopiuj ten adres do przeglądarki:
+            </p>
+            <p
+              style="
+                margin: 8px 0 0;
+                font-size: 13px;
+                line-height: 1.5;
+                word-break: break-all;
+              "
+            >
+              <a href="{{ .ConfirmationURL }}" style="color: #131316"
+                >{{ .ConfirmationURL }}</a
+              >
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 24px 32px 32px">
+            <p
+              style="
+                margin: 0;
+                padding-top: 20px;
+                border-top: 1px solid #e0e0dc;
+                font-size: 13px;
+                line-height: 1.6;
+                color: #696973;
+              "
+            >
+              Jeśli to nie Ty prosiłeś o zmianę hasła, zignoruj tę wiadomość.
+              Dotychczasowe hasło pozostaje ważne i nikt nie uzyskał dostępu do
+              Twojego konta.
+            </p>
+          </td>
+        </tr>
+      </table>
+
+      <table
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        style="max-width: 520px"
+      >
+        <tr>
+          <td style="padding: 20px 32px; text-align: center">
+            <p
+              style="
+                margin: 0;
+                font-size: 12px;
+                line-height: 1.6;
+                color: #696973;
+              "
+            >
+              ZELAK Dog Training · kontakt@zelak.pl · +48 572 579 595<br />
+              <a href="https://zelak.pl" style="color: #696973">zelak.pl</a>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

@@ -1,0 +1,266 @@
+{
+  "_readme": "JEDYNE miejsce z treścią i danymi kontaktowymi. Podmień wartości w nawiasach kwadratowych — kod nie wymaga zmian.",
+  "brand": {
+    "name": "ZELAK",
+    "fullName": "ZELAK Dog Training",
+    "tagline": "Obedience • Nosework • Drive",
+    "logo": {
+      "src": "/assets/images/zelak-logo.webp",
+      "srcSet": "/assets/images/zelak-logo-600.webp 600w, /assets/images/zelak-logo-800.webp 800w, /assets/images/zelak-logo.webp 1200w",
+      "alt": "ZELAK Dog Training - trener psów"
+    },
+    "mark": {
+      "src": "/assets/images/zelak-mark.webp",
+      "alt": ""
+    },
+    "badge": {
+      "src": "/assets/images/zelak-badge.webp",
+      "alt": ""
+    },
+    "_assetsNote": "Oryginały pełnej rozdzielczości leżą w /brand-source/ poza public/. Tam też wersja negatywowa hero (hero-bg-negatyw.webp), obecnie nieużywana."
+  },
+  "seo": {
+    "title": "Szkolenie psów Zabrze i Śląsk — trener psów, K9 | ZELAK",
+    "description": "Szkolenie psów Zabrze i cały Śląsk: posłuszeństwo pod IGP, nosework i detekcja, praca z psami reaktywnymi i lękowymi. Treningi indywidualne, dojazd do klienta.",
+    "canonical": "https://zelak.pl",
+    "keywords": [
+      "trener psów Śląsk",
+      "szkolenie psów Śląsk",
+      "trener psów Zabrze",
+      "szkolenie psów Zabrze",
+      "szkolenie psów Gliwice",
+      "szkolenie psów Katowice",
+      "IGP",
+      "szkolenie IGP",
+      "posłuszeństwo sportowe",
+      "nosework Śląsk",
+      "detekcja węchowa",
+      "zawody węchowe",
+      "tropienie psa",
+      "pies agresywny",
+      "pies reaktywny",
+      "pies lękowy",
+      "agresja u psa",
+      "behawiorysta Zabrze",
+      "behawiorysta Śląsk",
+      "szkolenie przewodników psów",
+      "szkolenie K9",
+      "ZELAK Dog Training"
+    ]
+  },
+  "navigation": [
+    {
+      "label": "Start",
+      "target": "#start"
+    },
+    {
+      "label": "O mnie",
+      "target": "#o-mnie"
+    },
+    {
+      "label": "Oferta",
+      "target": "#oferta"
+    },
+    {
+      "label": "Kontakt",
+      "target": "#kontakt"
+    }
+  ],
+  "navZone": {
+    "label": "Strefa kursanta",
+    "path": "/panel",
+    "_note": "Wejście do strefy kursów w menu, obok przycisku „Umów trening”. Celowo słabsze wizualnie niż ten przycisk — strona jest przede wszystkim o trenerze. Gdy kursy mają wyjść na pierwszy plan, wystarczy zamienić miejscami: navCta → strefa, a wejście do strefy w hero jako główny przycisk."
+  },
+  "navCta": {
+    "label": "Umów trening",
+    "target": "#kontakt"
+  },
+  "hero": {
+    "eyebrow": "Profesjonalne szkolenie psów — Zabrze i cały Śląsk",
+    "headline": "Szkolenie psów. Zbuduj relację, rozwiń możliwości.",
+    "subheadline": "Indywidualne podejście do psa i przewodnika. Posłuszeństwo, nosework oraz świadoma praca nad motywacją i komunikacją.",
+    "primaryCTA": {
+      "label": "Umów trening",
+      "target": "#kontakt"
+    },
+    "secondaryCTA": {
+      "label": "Poznaj ofertę",
+      "target": "#oferta"
+    }
+  },
+  "statement": {
+    "headline": "OBEDIENCE • NOSEWORK • DRIVE",
+    "text": "Trening oparty na komunikacji, konsekwencji i świadomym budowaniu zaangażowania psa."
+  },
+  "about": {
+    "eyebrow": "O mnie",
+    "headline": "Trening dopasowany do psa, nie pies do schematu.",
+    "paragraphs": [
+      "Nazywam się Łukasz i szkoleniem psów na Śląsku zajmuję się zawodowo — pracuję zarówno z opiekunami psów rodzinnych, jak i z przewodnikami psów pracujących.",
+      "W pracy skupiam się na budowaniu czytelnej komunikacji między psem a przewodnikiem, rozwijaniu motywacji oraz tworzeniu umiejętności przydatnych zarówno w codziennym życiu, jak i pracy sportowej.",
+      "Każdy pies jest inny, dlatego plan treningowy dobieram indywidualnie do jego charakteru, możliwości, wieku oraz celu opiekuna.",
+      "Najważniejsze są dla mnie jasne zasady, konsekwencja, dobra relacja oraz praktyczne efekty treningu."
+    ],
+    "image": {
+      "src": "/assets/images/trener-z-psem-900.webp",
+      "srcSet": "/assets/images/trener-z-psem-600.webp 600w, /assets/images/trener-z-psem-900.webp 900w, /assets/images/trener-z-psem-1200.webp 1200w",
+      "alt": "Trener psów ze Śląska ze szczeniakiem owczarka na rękach, podczas zajęć na terenie treningowym"
+    },
+    "stats": [
+      {
+        "value": "1000+",
+        "label": "przeprowadzonych treningów"
+      },
+      {
+        "value": "1:1",
+        "label": "indywidualne podejście"
+      }
+    ]
+  },
+  "values": {
+    "eyebrow": "Podejście",
+    "headline": "Fundament dobrego treningu",
+    "items": [
+      {
+        "icon": "message-circle",
+        "title": "Komunikacja",
+        "description": "Uczę przewodnika, jak jasno komunikować się z psem i właściwie odczytywać jego zachowanie."
+      },
+      {
+        "icon": "target",
+        "title": "Cel",
+        "description": "Zaczynamy od ustalenia, co konkretnie chcesz osiągnąć. Do tego dobieram plan pracy dla Ciebie i Twojego psa."
+      },
+      {
+        "icon": "activity",
+        "title": "Motywacja",
+        "description": "Budujemy chęć współpracy, zaangażowanie i odpowiednią motywację psa."
+      },
+      {
+        "icon": "shield-check",
+        "title": "Kontrola",
+        "description": "Pracujemy nad spokojem, pewnością oraz zachowaniem psa również w trudnym środowisku."
+      }
+    ]
+  },
+  "offer": {
+    "eyebrow": "Oferta",
+    "headline": "Szkolenie psów — w czym mogę Ci pomóc?",
+    "description": "Zakres szkolenia dobieramy po poznaniu psa, jego zachowania oraz celu, który chcesz osiągnąć — od codziennego posłuszeństwa po przygotowanie do startów w zawodach. Pracuję indywidualnie na terenie całego Śląska."
+  },
+  "process": {
+    "eyebrow": "Jak zaczynamy?",
+    "headline": "Od pierwszego kontaktu do treningu",
+    "steps": [
+      {
+        "number": "01",
+        "title": "Kontakt",
+        "description": "Napisz lub zadzwoń i krótko opisz psa oraz cel treningu."
+      },
+      {
+        "number": "02",
+        "title": "Konsultacja",
+        "description": "Poznajemy psa, omawiamy obecną sytuację i ustalamy priorytety."
+      },
+      {
+        "number": "03",
+        "title": "Plan",
+        "description": "Przygotowuję kierunek pracy dopasowany do Waszych potrzeb."
+      },
+      {
+        "number": "04",
+        "title": "Trening",
+        "description": "Pracujemy krok po kroku, utrwalając umiejętności również poza zajęciami."
+      }
+    ]
+  },
+  "ctaBanner": {
+    "headline": "Chcesz lepiej dogadać się ze swoim psem?",
+    "text": "Opisz mi swoją sytuację. Powiem Ci, od czego najlepiej zacząć.",
+    "cta": {
+      "label": "Skontaktuj się",
+      "target": "#kontakt"
+    }
+  },
+  "contact": {
+    "eyebrow": "Kontakt",
+    "headline": "Zacznijmy pracę",
+    "description": "Napisz kilka zdań o swoim psie i tym, nad czym chcesz pracować — albo po prostu zadzwoń. Działam na terenie całego Śląska, odpowiadam z propozycją kolejnych kroków.",
+    "details": {
+      "phone": {
+        "label": "Telefon",
+        "value": "+48 572 579 595",
+        "href": "tel:+48572579595"
+      },
+      "email": {
+        "label": "E-mail",
+        "value": "kontakt@zelak.pl",
+        "href": "mailto:kontakt@zelak.pl"
+      },
+      "location": {
+        "label": "Obszar działania",
+        "value": "Zabrze i cały Śląsk"
+      }
+    },
+    "social": [
+      {
+        "type": "instagram",
+        "label": "Instagram",
+        "url": "https://www.instagram.com/saszk9a/",
+        "enabled": true
+      },
+      {
+        "type": "youtube",
+        "label": "YouTube",
+        "url": "https://www.youtube.com/@Saszk9a",
+        "enabled": true
+      },
+      {
+        "type": "tiktok",
+        "label": "TikTok",
+        "url": "https://www.tiktok.com/@saszk9a",
+        "enabled": true,
+        "iconSrc": "",
+        "_iconHint": "wgraj oficjalną ikonę TikToka do public/assets/images/ i wpisz tu ścieżkę"
+      },
+      {
+        "type": "facebook",
+        "label": "Facebook",
+        "url": "",
+        "enabled": false,
+        "_note": "profil w budowie — ustaw url i enabled:true, żeby pokazać ikonę"
+      }
+    ],
+    "cta": {
+      "label": "Wyślij wiadomość",
+      "subject": "Zapytanie ze strony zelak.pl",
+      "_note": "Przycisk otwiera domyślny program pocztowy urządzenia z wpisanym adresem kontaktowym. Temat możesz zmienić lub usunąć — wtedy zostanie sam adres."
+    }
+  },
+  "footer": {
+    "zone": {
+      "label": "Strefa kursów",
+      "path": "/kursy",
+      "_note": "Drugie wejście do strefy, obok tego w menu (navZone). Prowadzi do katalogu: zalogowany trafia prosto do kursów, niezalogowany na logowanie i wraca do katalogu po zalogowaniu."
+    },
+    "legal": [
+      {
+        "label": "Regulamin",
+        "path": "/regulamin"
+      },
+      {
+        "label": "Polityka prywatności",
+        "path": "/polityka-prywatnosci"
+      }
+    ],
+    "copyright": "ZELAK Dog Training. Wszelkie prawa zastrzeżone."
+  },
+  "trainingGround": {
+    "name": "Kąpielisko Leśne",
+    "address": "Zabrze, teren Kąpieliska Leśnego",
+    "lat": 50.321438,
+    "lng": 18.74456,
+    "mapsUrl": "https://maps.app.goo.gl/98tjvR3XhnnADizC9",
+    "notice": "Plac jest w trakcie przebudowy — treningi odbywają się normalnie, bez przerw."
+  }
+}

@@ -1,0 +1,212 @@
+# ==========================================================================
+#  ZELAK Dog Training — konfiguracja Apache
+#  Plik trafia automatycznie do dist/ przy `npm run build`.
+#  Wgraj go razem z resztą zawartości dist/ do katalogu strony na serwerze.
+# ==========================================================================
+
+# --- Kodowanie -----------------------------------------------------------
+AddDefaultCharset UTF-8
+
+# --- Nie pokazuj listy plików, gdy brakuje index.html --------------------
+# Jeśli hosting zwróci błąd 500 zaraz po wgraniu pliku, zakomentuj tę linię —
+# część serwerów współdzielonych nie pozwala nadpisywać dyrektywy Options.
+Options -Indexes
+
+# ==========================================================================
+#  1. ROUTING SPA — najważniejsza część
+#  Bez tego zelak.pl/polityka-prywatnosci zwróci 404, bo taki plik
+#  fizycznie nie istnieje — trasę obsługuje React Router w przeglądarce.
+# ==========================================================================
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Jeżeli strona leży w podkatalogu, odkomentuj i podaj ścieżkę,
+  # np. RewriteBase /zelak/
+  # RewriteBase /
+
+  # --- www.zelak.pl -> zelak.pl -----------------------------------------
+  # MUSI stać przed regułą „istniejący plik serwujemy normalnie" — inaczej
+  # dla adresów, którym odpowiada plik na dysku (czyli m.in. dla strony
+  # głównej), przetwarzanie kończy się wcześniej i przekierowanie nigdy
+  # nie odpala. Warunek zawęża regułę do hostów zaczynających się od www,
+  # więc pętla przekierowań jest niemożliwa.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE]
+
+  # --- Czyste adresy sekcji -> kotwice na stronie głównej ---------------
+  # Ktoś wpisze z ręki zelak.pl/kontakt albo trafi tam ze starego linku;
+  # przekierowanie 301 robimy na serwerze, żeby wykonało się zanim ruszy
+  # JavaScript. Flaga NE zostawia znak # nieprzepisany.
+  RewriteRule ^start/?$          /#start        [R=301,L,NE]
+  RewriteRule ^o-mnie/?$         /#o-mnie       [R=301,L,NE]
+  RewriteRule ^oferta/?$         /#oferta       [R=301,L,NE]
+  RewriteRule ^proces/?$         /#proces       [R=301,L,NE]
+  RewriteRule ^kontakt/?$        /#kontakt      [R=301,L,NE]
+
+  # Istniejący plik lub katalog serwujemy normalnie (JS, CSS, obrazy,
+  # robots.txt, favicon) — nie przepuszczamy ich przez przepisanie.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # --- 1a. STREFA KURSÓW -> app.html ------------------------------------
+  #
+  # Adresy strefy nie istnieją jako pliki i NIE MOGĄ być prerenderowane:
+  # ich treść zależy od zalogowanego użytkownika. Dostają własną, pustą
+  # powłokę `app.html` zamiast `index.html`.
+  #
+  # Dlaczego nie index.html: ten plik zawiera prerenderowaną stronę główną
+  # wstrzykniętą w <div id="root">. React montowałby na niej panel, treść
+  # by się nie zgadzała i hydratacja pękałaby (React #418) — dokładnie ten
+  # sam problem, który wcześniej dotyczył strony 404. `app.html` ma #root
+  # pusty, więc React renderuje od zera i nic się nie rozjeżdża.
+  #
+  # UWAGA: lista prefiksów musi być zgodna z ZONE_PREFIXES w
+  # `src/kursy/paths.js`. Apache nie czyta JavaScriptu — synchronizacja
+  # jest ręczna.
+  RewriteRule ^(panel|kursy|konto|logowanie|rejestracja|reset-hasla|nowe-haslo|aktywuj|program|trener)(/.*)?$ /app.html [L]
+
+</IfModule>
+
+# Każda realna podstrona istnieje na dysku jako gotowy plik (prerendering
+# w `npm run build`), więc nie przepisujemy wszystkiego na index.html.
+# Nieznany adres obsługuje ErrorDocument: serwer oddaje prerenderowaną
+# stronę 404 (dist/404.html) ze statusem 404 — dokładnie tę samą, którą
+# wyrenderuje React, więc hydratacja się zgadza. Wyszukiwarka dostaje
+# uczciwy kod błędu zamiast „miękkiego 404”.
+#
+# UWAGA: dodajesz nową trasę w React? Dopisz ją do ROUTES w
+# scripts/prerender.js, inaczej będzie zwracać 404.
+ErrorDocument 404 /404.html
+
+# ==========================================================================
+#  2. TYPY MIME
+#  Starsze konfiguracje Apache nie znają WebP — bez tego przeglądarka
+#  dostaje obrazy jako "application/octet-stream" i ich nie wyświetla.
+# ==========================================================================
+<IfModule mod_mime.c>
+  AddType image/webp                   .webp
+  AddType image/svg+xml                .svg
+  AddType application/manifest+json    .webmanifest
+  AddType font/woff2                   .woff2
+</IfModule>
+
+# ==========================================================================
+#  3. KOMPRESJA
+# ==========================================================================
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml
+  # Uwaga: Apache 2.4 serwuje pliki .js jako "text/javascript", a nie
+  # "application/javascript". Wymienienie tylko tego drugiego sprawia, że
+  # największe pliki strony jadą NIESKOMPRESOWANE — stąd wszystkie warianty.
+  AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+  AddOutputFilterByType DEFLATE application/json image/svg+xml
+  AddOutputFilterByType DEFLATE application/manifest+json
+  # Obrazy WebP i fonty woff2 są już skompresowane — nie pakujemy ich drugi raz.
+</IfModule>
+
+# ==========================================================================
+#  4. CACHE
+#
+#  UWAGA — to nie jest kosmetyka. Pliki w assets/ mają w nazwie skrót
+#  (np. index-C6gOeh7n.js), więc każdy build tworzy nowe nazwy i można je
+#  cache'ować na rok. Ale index.html MUSI być pobierany za każdym razem:
+#  gdyby przeglądarka trzymała stary index.html, odwoływałby się on do
+#  plików, których po wgraniu nowej wersji już nie ma — i strona byłaby
+#  biała do czasu wyczyszczenia cache przez użytkownika.
+# ==========================================================================
+<IfModule mod_headers.c>
+  # index.html — zawsze świeży
+  <FilesMatch "^index\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # zasoby z odciskiem w nazwie — rok, bez pytania serwera
+  <FilesMatch "-[A-Za-z0-9_-]{8,}\.(js|css)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp             "access plus 6 months"
+  ExpiresByType image/png              "access plus 6 months"
+  ExpiresByType image/jpeg             "access plus 6 months"
+  ExpiresByType image/svg+xml          "access plus 6 months"
+  ExpiresByType font/woff2             "access plus 1 year"
+  ExpiresByType text/css               "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType text/html              "access plus 0 seconds"
+</IfModule>
+
+# ==========================================================================
+#  5. NAGŁÓWKI BEZPIECZEŃSTWA
+# ==========================================================================
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+  # HSTS — włącz DOPIERO gdy HTTPS działa poprawnie na całej domenie.
+  # Raz wysłany nagłówek zmusza przeglądarki do HTTPS przez rok.
+  # Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+</IfModule>
+
+# ==========================================================================
+#  6. HTTPS I WERSJA DOMENY  (odkomentuj po wgraniu certyfikatu)
+#
+#  Uwaga: część hostingów wymusza HTTPS we własnym panelu. Jeśli tak jest,
+#  zostaw te reguły zakomentowane — inaczej powstanie pętla przekierowań.
+# ==========================================================================
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # www.zelak.pl -> zelak.pl
+  #
+  # Obie wersje serwowały tę samą treść, co dla wyszukiwarki jest duplikatem
+  # domeny: sygnały rozkładają się na dwa adresy zamiast wzmacniać jeden.
+  # Reguła odpala się TYLKO gdy host zaczyna się od www, więc nie może
+  # wpaść w pętlę przekierowań.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301,NE]
+</IfModule>
+
+# Wymuszenie HTTPS zostawiam wyłączone — Hostido obsługuje je we własnym
+# panelu. Włączenie obu naraz kończy się zwykle pętlą przekierowań.
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} !=on
+#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ==========================================================================
+#  7. Nie wydawaj plików, które nie powinny być publiczne
+# ==========================================================================
+<IfModule mod_authz_core.c>
+  # Apache 2.4
+  <FilesMatch "^(\.htaccess|\.env|.*\.map|package(-lock)?\.json)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  # Apache 2.2 — starsza składnia
+  <FilesMatch "^(\.htaccess|\.env|.*\.map|package(-lock)?\.json)$">
+    Order allow,deny
+    Deny from all
+  </FilesMatch>
+</IfModule>
+
+# ==========================================================================
+#  GDYBY COŚ NIE ZADZIAŁAŁO
+#
+#  Błąd 500 zaraz po wgraniu  -> zakomentuj "Options -Indexes" (sekcja na górze).
+#                                Jeśli nie pomoże, zostaw samą sekcję 1.
+#  404 na /polityka-prywatnosci -> hosting ma wyłączony mod_rewrite albo
+#                                AllowOverride None. Napisz do supportu.
+#  Strona w podkatalogu         -> odkomentuj RewriteBase w sekcji 1.
+#  Pętla przekierowań           -> hosting już wymusza HTTPS; zostaw sekcję 6
+#                                zakomentowaną.
+#  Biała strona po aktualizacji -> sprawdź, czy działa sekcja 4 (index.html
+#                                nie może być cache'owany).
+# ==========================================================================

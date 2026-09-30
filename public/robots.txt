@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Katalog z zasobami musi być dostępny dla robotów — Google renderuje
+# stronę tak jak przeglądarka i potrzebuje JS, CSS oraz obrazów.
+Allow: /assets/
+
+# Strefa kursów — treść prywatna, za logowaniem. Nie ma czego indeksować,
+# a katalog dni kursu wyglądałby dla robota jak tysiąc pustych podstron.
+# Podstrony mają dodatkowo `noindex` w znaczniku robots (patrz app.html).
+Disallow: /panel
+Disallow: /kursy
+Disallow: /konto
+Disallow: /logowanie
+Disallow: /rejestracja
+Disallow: /reset-hasla
+Disallow: /nowe-haslo
+Disallow: /aktywuj
+Disallow: /program
+Disallow: /trener
+
+Sitemap: https://zelak.pl/sitemap.xml

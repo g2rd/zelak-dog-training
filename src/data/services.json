@@ -1,0 +1,96 @@
+[
+  {
+    "id": "posluszenstwo",
+    "title": "Posłuszeństwo",
+    "subtitle": "Codzienne i sportowe — również pod IGP",
+    "description": "Dwa tory pracy, które można prowadzić osobno albo równolegle. Posłuszeństwo użytkowe — po to, żeby codzienne życie z psem było spokojne. Posłuszeństwo sportowe — precyzja i powtarzalność wymagane na zawodach, z przygotowaniem do części B egzaminu IGP.",
+    "features": [
+      "przywołanie i chodzenie na luźnej smyczy",
+      "pozycje, komendy i zostawanie",
+      "skupienie na przewodniku i praca w rozproszeniach",
+      "posłuszeństwo sportowe pod IGP",
+      "chodzenie przy nodze bez smyczy",
+      "aportowanie i wysyłanie naprzód",
+      "odłożenie w rozproszeniu",
+      "przygotowanie do egzaminów i startów w zawodach"
+    ],
+    "price": {
+      "visible": false,
+      "value": ""
+    },
+    "cta": {
+      "label": "Zapytaj o trening",
+      "target": "#kontakt"
+    }
+  },
+  {
+    "id": "nosework",
+    "title": "Nosework i detekcja",
+    "subtitle": "Praca węchowa, detekcja i tropienie",
+    "description": "Trening rozwijający naturalne możliwości psa poprzez świadomą i uporządkowaną pracę nosem — od pierwszych przeszukań, przez detekcję zapachów wzorcowych, po tropienie. Prowadzę też przygotowanie do startów w zawodach węchowych.",
+    "features": [
+      "podstawy pracy węchowej",
+      "budowanie oznaczenia",
+      "detekcja zapachów wzorcowych",
+      "przeszukania pomieszczeń i terenu",
+      "tropienie",
+      "rozwijanie samodzielności psa",
+      "praca nad koncentracją i wytrwałością",
+      "przygotowanie do zawodów węchowych"
+    ],
+    "price": {
+      "visible": false,
+      "value": ""
+    },
+    "cta": {
+      "label": "Zapytaj o nosework",
+      "target": "#kontakt"
+    }
+  },
+  {
+    "id": "drive",
+    "title": "Drive & Motivation",
+    "subtitle": "Zabawa zbudowana pod predyspozycje rasy",
+    "description": "Każdy pies nosi w sobie ten sam ciąg zachowań łowieckich — od namierzenia i skradania, przez pościg, po chwyt i niesienie. Hodowla przez pokolenia wzmacniała u każdej rasy inne jego ogniwo: jeden pies żyje pościgiem, drugi chwytem i szarpaniem, trzeci noszeniem zdobyczy. Zabawę i nagrodę buduję na tym ogniwie, które u Twojego psa jest najsilniejsze — bo wtedy przestaje być przekupstwem, a staje się czymś, o co pies naprawdę chce pracować.",
+    "features": [
+      "dobór zabawki i sposobu zabawy pod rasę",
+      "budowanie wartości nagrody",
+      "praca zabawką i praca jedzeniem",
+      "chwyt, szarpanie, pościg lub aport — zależnie od psa",
+      "kontrola emocji i wyciszanie po pobudzeniu",
+      "zaangażowanie i chęć współpracy",
+      "relacja przewodnik-pies"
+    ],
+    "price": {
+      "visible": false,
+      "value": ""
+    },
+    "cta": {
+      "label": "Dowiedz się więcej",
+      "target": "#kontakt"
+    }
+  },
+  {
+    "id": "konsultacje",
+    "title": "Konsultacje indywidualne",
+    "subtitle": "Zachowania trudne: agresja, lęk, reaktywność",
+    "description": "Spotkanie 1:1 dla psów, z którymi zwykły trening nie wystarcza. Zaczynamy od oceny sytuacji i przyczyn zachowania, a nie od gaszenia objawów — dopiero na tej podstawie powstaje plan dalszej pracy.",
+    "features": [
+      "analiza zachowania psa i wywiad z przewodnikiem",
+      "psy reaktywne na psy i ludzi",
+      "agresja — ocena sytuacji i bezpieczne prowadzenie",
+      "lęki, nadwrażliwość i psy niepewne",
+      "pierwszy trening na miejscu",
+      "zalecenia do pracy własnej",
+      "plan kolejnych etapów"
+    ],
+    "price": {
+      "visible": false,
+      "value": ""
+    },
+    "cta": {
+      "label": "Umów konsultację",
+      "target": "#kontakt"
+    }
+  }
+]
